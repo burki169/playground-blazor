@@ -8,6 +8,13 @@
 
 <p role="status">Current count: @currentCount</p>
 
+<div class="mt-3">
+		<input @bind="text" @bind:event="oninput" @bind:after="SearchAsync"/>
+		<button @onclick="onPart7BtnClick"> Clear </button>
+		<p>@text</p>
+		<p>@SearchResult</p>
+</div>
+
 <input type="type" name="name" value="" @onchange="onChange" @oninput="onInput" />
 <button class="btn btn-primary" @onclick="IncrementCountAsync">Click me</button>
 <button class="btn btn-primary" @onclick="() => currentCount+=2">Click me Inline</button>
@@ -34,8 +41,16 @@ InitialCount is: @InitialCount
 @code {
 	private int currentCount = 0;
 	private string name = "";
+	private string text = "";
 	private string eventText = "Mouse Out";
+	private string SearchResult = "Waiting...";
 
+	async Task SearchAsync()
+	{
+		SearchResult = $"Searching for {text}";
+		await Task.Delay(2000);
+		SearchResult = $"Found 123 items with keyword {text}";
+	}
 	protected override void OnInitialized()
 	{
 		base.OnInitialized();
@@ -73,5 +88,9 @@ InitialCount is: @InitialCount
 	private void onMouseOut(MouseEventArgs e)
 	{
 		eventText = "Mouse out";
+	}
+	private void onPart7BtnClick(MouseEventArgs e)
+	{
+		text = "";
 	}
 }
